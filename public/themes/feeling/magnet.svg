@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="230.7725 68.9989 101.41399 117.55629"
+   width="101.41404"
+   height="117.55634"
+   preserveAspectRatio="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="magnet.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="4.1607685"
+     inkscape:cx="55.8791"
+     inkscape:cy="77.269379"
+     inkscape:window-width="896"
+     inkscape:window-height="204"
+     inkscape:window-x="0"
+     inkscape:window-y="39"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <g
+     id="g3164"
+     transform="matrix(0.28925082,-0.20377554,0.20377554,0.28925082,-2515.9101,1989.0784)">
+    <path
+       id="path3165"
+       d="m 0,0 c 41.908,0 76.001,-34.094 76.001,-76.001 v -50.224 H 35.197 v 50.224 c 0,19.407 -15.79,35.197 -35.197,35.197"
+       style="fill:#7a7978;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       transform="matrix(1.3333333,0,0,-1.3333333,9496,74.345067)"
+       clip-path="url(#clipPath3166)" />
+    <path
+       id="path3167"
+       d="M 0,0 C -19.407,0 -35.197,-15.789 -35.197,-35.197 V -85.42 h -40.804 v 50.223 c 0,41.907 34.093,76.001 76.001,76.001"
+       style="fill:#7a7978;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       transform="matrix(1.3333333,0,0,-1.3333333,9496,128.7508)"
+       clip-path="url(#clipPath3168)" />
+    <path
+       id="path3169"
+       d="M 0,0 H -19.523 C -25.4,0 -30.164,4.764 -30.164,10.641 V 28.788 H 10.641 V 10.641 C 10.641,4.764 5.877,0 0,0"
+       style="fill:#7a7978;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       transform="matrix(1.3333333,0,0,-1.3333333,9583.1475,293.65493)"
+       clip-path="url(#clipPath3170)" />
+    <path
+       id="path3171"
+       d="M 0,0 H -19.523 C -25.4,0 -30.164,4.764 -30.164,10.641 V 28.788 H 10.641 V 10.641 C 10.641,4.764 5.877,0 0,0"
+       style="fill:#7a7978;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       transform="matrix(1.3333333,0,0,-1.3333333,9434.8831,293.65493)"
+       clip-path="url(#clipPath3172)" />
+  </g>
+  <path
+     style="fill:#7a7978;stroke-width:3;stroke-linecap:round"
+     d="m 267.00185,161.55987 3.6051,17.06415 9.85395,-4.08578 5.52783,12.01701 -2.16307,-20.9096 -7.69088,2.64374 0.48068,-12.25735 z"
+     id="path1" />
+  <path
+     style="fill:#7a7978;stroke-width:3;stroke-linecap:round"
+     d="m 313.19966,132.49328 3.6051,17.06415 9.85395,-4.08578 5.52783,12.01701 -2.16307,-20.9096 -7.69088,2.64374 0.48068,-12.25735 z"
+     id="path1-5" />
+</svg>

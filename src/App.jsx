@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { THEMES, THEME_ICONS, THEME_STRINGS, getRandomItems, getSVGPath, CORE_ICONS } from './data/themes'
+import { THEMES, THEME_ICONS, THEME_STRINGS, getRandomItems, getSVGPath, FEELING_ICONS, EVENT_ICONS } from './data/themes'
 
 
 // Player Input Component with auto-focus
@@ -21,7 +21,7 @@ function PlayerInput({ index, value, onChange, onKeyDown, placeholder, isFocused
       onKeyDown={onKeyDown}
       onFocus={onFocus}
       placeholder={placeholder}
-      className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-lg transition-colors"
+      className="w-full p-4 border-2 border-gray-600 bg-gray-800 text-white rounded-xl focus:border-purple-500 focus:outline-none text-lg transition-colors placeholder-gray-400"
     />
   )
 }
@@ -98,12 +98,14 @@ function App() {
     // Store scores at start of turn
     setTurnStartScores([...scores])
     
-    // Choose 3 theme icons and 2 core icons (randomly selected each turn)
+    // Choose 3 theme icons, 1 feeling icon, and 1 event icon (randomly selected each turn)
     const themeIconList = getRandomItems(THEME_ICONS[theme.id], 3)
-    const coreIconList = getRandomItems(CORE_ICONS, 2)
+    const feelingIconList = getRandomItems(FEELING_ICONS, 1)
+    const eventIconList = getRandomItems(EVENT_ICONS, 1)
     const icons = [
       ...themeIconList.map(icon => ({ icon, theme: theme.id })),
-      ...coreIconList.map(icon => ({ icon, theme: 'core' }))
+      ...feelingIconList.map(icon => ({ icon, theme: 'feeling' })),
+      ...eventIconList.map(icon => ({ icon, theme: 'event' }))
     ]
     // shuffle
     const shuffledIcons = getRandomItems(icons, icons.length)
@@ -252,16 +254,12 @@ function App() {
   // Screen 1: Player Entry
   if (screen === 'PLAYER_ENTRY') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 to-blue-50">
-        <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-8">
-          <h1 className="text-4xl font-bold text-center mb-2 text-gray-800">Phraseotomy</h1>
-          <p className="text-center text-gray-600 mb-8">Local Play</p>
-          <h2 className="text-2xl font-semibold mb-2 text-gray-700">
-            Enter Player Names ({MIN_PLAYERS} minimum, {MAX_PLAYERS} maximum)
+      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
+        <div className="w-full max-w-2xl bg-gray-900 rounded-3xl shadow-xl p-8">
+          <h1 className="text-4xl font-bold text-center mb-2 text-white">Phraseotomy</h1>
+          <h2 className="text-2xl font-semibold mb-2 text-gray-200">
+            Enter Player Names
           </h2>
-          <p className="text-sm text-gray-500 mb-6">
-            Press Enter to move to the next field
-          </p>
           <div className="space-y-4">
             {players.map((player, index) => {
               // Only show if it has content or is one of the first MIN_PLAYERS
@@ -309,8 +307,8 @@ function App() {
                 disabled={!allFieldsFilled}
                 className={`w-full p-3 border-2 border-dashed rounded-xl transition-colors ${
                   allFieldsFilled
-                    ? 'border-gray-300 text-gray-500 hover:border-purple-400 hover:text-purple-600'
-                    : 'border-gray-200 text-gray-300 cursor-not-allowed'
+                    ? 'border-gray-600 text-gray-400 hover:border-purple-400 hover:text-purple-400'
+                    : 'border-gray-700 text-gray-600 cursor-not-allowed'
                 }`}
               >
                 + Add Player ({players.filter(p => p && p.trim().length > 0).length}/{MAX_PLAYERS})
@@ -330,7 +328,7 @@ function App() {
               START GAME
             </button>
             {!allPlayersUnique && (
-              <p className="text-red-600 text-sm mt-2 text-right">⚠️ All players must have unique names</p>
+              <p className="text-red-400 text-sm mt-2 text-right">⚠️ All players must have unique names</p>
             )}
           </div>
         </div>
@@ -338,28 +336,42 @@ function App() {
     )
   }
 
+  // Helper function to get tile image path
+  const getThemeTilePath = (theme) => {
+    return `/themes/${theme.folder} tile.png`
+  }
+
   // Screen 2: Theme Selection
   if (screen === 'THEME_SELECT') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 to-blue-50">
-        <div className="w-full max-w-4xl bg-white rounded-3xl shadow-xl p-8">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
+        <div className="w-full max-w-4xl bg-black rounded-3xl shadow-xl p-8">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+            <h2 className="text-3xl font-bold text-white mb-2">
               {currentStoryteller}'s Turn
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-300">
               Round {currentRound} of {TOTAL_ROUNDS} • Turn {(currentTurn % (players.filter(p => p && p.trim().length > 0).length)) + 1} of {players.filter(p => p && p.trim().length > 0).length} in this round
             </p>
-            <p className="text-xl font-semibold text-purple-600 mt-4">Choose a Theme</p>
+            <p className="text-xl font-semibold text-purple-400 mt-4">Choose a Theme</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {THEMES.map((theme) => (
               <button
                 key={theme.id}
                 onClick={() => handleThemeSelect(theme)}
-                className="p-6 border-2 border-gray-300 rounded-2xl hover:border-purple-500 hover:bg-purple-50 transition-all hover:shadow-lg text-center"
+                className="relative aspect-square rounded-2xl overflow-hidden hover:scale-105 transition-transform hover:shadow-2xl border-2 border-transparent hover:border-purple-500"
               >
-                <div className="font-bold text-lg text-gray-800">{theme.name}</div>
+                <img
+                  src={getThemeTilePath(theme)}
+                  alt={theme.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback if tile doesn't load
+                    e.target.style.display = 'none'
+                    e.target.parentElement.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-800 text-white font-bold text-lg">${theme.name}</div>`
+                  }}
+                />
               </button>
             ))}
           </div>
@@ -402,16 +414,19 @@ function App() {
   // Screen 3: Game Display (5 icons + 1 string)
   if (screen === 'GAME_DISPLAY') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 to-blue-50">
-        <div className="w-full max-w-5xl bg-white rounded-3xl shadow-xl p-8">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
+        <div className="w-full max-w-5xl bg-gray-900 rounded-3xl shadow-xl p-8">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-white mb-2">
               {currentStoryteller} - {selectedTheme?.name}
             </h2>
           </div>
           
+          <p className="text-center text-lg text-gray-200 mb-2">Use these icons to tell a 60s story</p>
+          <p className="text-center text-sm text-gray-400 mb-4">drag and drop to re-order the icons</p>
+          
           {/* 5 SVG Icons */}
-          <div className="grid grid-cols-5 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-4">
             {selectedIcons.map((item, index) => {
               return (
                 <div
@@ -424,22 +439,21 @@ function App() {
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, index)}
                     onDragEnd={handleDragEnd}
-                    className={`aspect-square border-2 rounded-xl p-4 flex items-center justify-center transition-all cursor-move relative overflow-hidden ${
+                    className={`aspect-square border-2 rounded-xl p-1 sm:p-4 flex items-center justify-center transition-all cursor-move relative overflow-hidden ${
                       draggedIconIndex === index 
-                        ? 'opacity-50 border-purple-500 bg-purple-50' 
+                        ? 'opacity-50 border-purple-500 bg-white' 
                         : draggedIconIndex !== null && draggedIconIndex !== index
-                        ? 'border-purple-300 bg-purple-50'
-                        : 'border-gray-300 bg-gray-50 hover:bg-gray-100'
+                        ? 'border-purple-600 bg-white'
+                        : 'border-gray-600 bg-white hover:bg-gray-50'
                     }`}
                   >
                     <img
                       src={getSVGPath(item.theme, item.icon)}
                       alt={`Icon ${index + 1}`}
-                      className="pointer-events-none select-none"
+                      className="pointer-events-none select-none w-[90%] h-[90%] sm:w-[70%] sm:h-[70%] max-w-[200px] max-h-[200px] sm:max-w-[120px] sm:max-h-[120px]"
                       style={{
-                        width: '80%',
-                        height: '80%',
                         objectFit: 'contain',
+                        objectPosition: 'center',
                       }}
                       draggable={false}
                       onError={(e) => {
@@ -449,21 +463,17 @@ function App() {
                       }}
                     />
                   </div>
-                  {/* Icon name label */}
-                  <p className="text-xs text-center text-gray-600 mt-2 break-words">
-                    {item.icon.replace('.svg', '')}
-                  </p>
                 </div>
               )
             })}
           </div>
 
           {/* Secret wisp text */}
-          <p className="text-center text-lg text-gray-600 mb-4">Here is your secret wisp:</p>
+          <p className="text-center text-lg text-gray-300 mb-4">Don't forget to also insert the secret wisp:</p>
 
           {/* String/Phrase - only visible when holding */}
           <div 
-            className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-2xl p-6 mb-8 min-h-[80px] flex items-center justify-center"
+            className="bg-gradient-to-r from-purple-900 to-blue-900 rounded-2xl p-6 mb-8 min-h-[80px] flex items-center justify-center border-2 border-purple-700"
             onMouseDown={() => setIsHoldingPhrase(true)}
             onMouseUp={() => setIsHoldingPhrase(false)}
             onMouseLeave={() => setIsHoldingPhrase(false)}
@@ -471,7 +481,7 @@ function App() {
             onTouchEnd={() => setIsHoldingPhrase(false)}
           >
             {isHoldingPhrase ? (
-              <p className="text-2xl font-semibold text-center text-gray-800">
+              <p className="text-2xl font-semibold text-center text-white">
                 {selectedString}
               </p>
             ) : (
@@ -497,11 +507,11 @@ function App() {
   // Screen 4: Points Add/Remove
   if (screen === 'POINTS_ADJUST') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 to-blue-50">
-        <div className="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-8">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
+        <div className="w-full max-w-3xl bg-gray-900 rounded-3xl shadow-xl p-8">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Adjust Points</h2>
-            <p className="text-gray-600">The Storyteller receives 1 point for every player deceived</p>
+            <h2 className="text-3xl font-bold text-white mb-2">Adjust Points</h2>
+            <p className="text-gray-300">The Storyteller receives 1 point for every player deceived</p>
           </div>
           
           <div className="space-y-4">
@@ -511,15 +521,15 @@ function App() {
               return (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 border-2 border-gray-200 rounded-xl bg-gray-50"
+                  className="flex items-center justify-between p-4 border-2 border-gray-700 rounded-xl bg-gray-800"
                 >
                   <div className="flex-1">
-                    <div className="font-semibold text-lg text-gray-800">{player}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="font-semibold text-lg text-white">{player}</div>
+                    <div className="text-sm text-gray-400">
                       Started with: {startingScore} points
                     </div>
                     {currentStorytellerIndex === index && (
-                      <span className="text-sm text-purple-600 font-medium">(Storyteller)</span>
+                      <span className="text-sm text-purple-400 font-medium">(Storyteller)</span>
                     )}
                   </div>
                   <div className="flex items-center gap-4">
@@ -530,10 +540,10 @@ function App() {
                       −
                     </button>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-gray-800">
+                      <div className="text-2xl font-bold text-white">
                         {roundScores[index]}
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-400">
                         Total: {currentTotal}
                       </div>
                     </div>
@@ -584,14 +594,14 @@ function App() {
     }
 
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-purple-50 to-blue-50">
-        <div className="w-full max-w-6xl bg-white rounded-3xl shadow-xl p-8">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
+        <div className="w-full max-w-6xl bg-gray-900 rounded-3xl shadow-xl p-8">
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Scoreboard</h2>
+            <h2 className="text-3xl font-bold text-white mb-2">Scoreboard</h2>
             {isGameComplete ? (
-              <p className="text-xl text-purple-600 font-semibold">Game Complete!</p>
+              <p className="text-xl text-purple-400 font-semibold">Game Complete!</p>
             ) : (
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Round {currentRound} of {TOTAL_ROUNDS} • Turn {currentTurnInRound} of {turnsPerRound} in this round
               </p>
             )}
@@ -600,44 +610,43 @@ function App() {
           {/* Score History Table */}
           {roundsData.length > 0 && (
             <div className="mb-8">
-              <h3 className="text-xl font-semibold text-gray-700 mb-4">Score History</h3>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-gray-100">
-                      <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Player</th>
+                    <tr className="bg-gray-800">
+                      <th className="border border-gray-600 px-4 py-2 text-left font-semibold text-white">Player</th>
                       {roundsData.map((roundData) => (
                         <th
                           key={roundData.round}
                           colSpan={roundData.turns.length}
-                          className="border border-gray-300 px-4 py-2 text-center font-semibold bg-purple-50"
+                          className="border border-gray-600 px-4 py-2 text-center font-semibold bg-purple-900 text-white"
                         >
                           Round {roundData.round}
                         </th>
                       ))}
-                      <th className="border border-gray-300 px-4 py-2 text-center font-semibold bg-blue-50">
+                      <th className="border border-gray-600 px-4 py-2 text-center font-semibold bg-blue-900 text-white">
                         Total
                       </th>
                     </tr>
-                    <tr className="bg-gray-50">
-                      <th className="border border-gray-300 px-4 py-2 text-left text-sm text-gray-600"></th>
+                    <tr className="bg-gray-800">
+                      <th className="border border-gray-600 px-4 py-2 text-left text-sm text-gray-400"></th>
                       {roundsData.map((roundData) =>
                         roundData.turns.map((turn, idx) => (
                           <th
                             key={`${roundData.round}-${idx}`}
-                            className="border border-gray-300 px-2 py-1 text-xs text-gray-600"
+                            className="border border-gray-600 px-2 py-1 text-xs text-gray-400"
                           >
                             T{turn.turn}
                           </th>
                         ))
                       )}
-                      <th className="border border-gray-300 px-4 py-2 text-center text-sm text-gray-600"></th>
+                      <th className="border border-gray-600 px-4 py-2 text-center text-sm text-gray-400"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {activePlayers.map((player, playerIndex) => (
-                      <tr key={playerIndex} className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-2 font-medium">{player}</td>
+                      <tr key={playerIndex} className="hover:bg-gray-800">
+                        <td className="border border-gray-600 px-4 py-2 font-medium text-white">{player}</td>
                         {roundsData.map((roundData) =>
                           roundData.turns.map((turn, turnIdx) => {
                             // Show points for this turn only (not cumulative)
@@ -645,14 +654,14 @@ function App() {
                             return (
                               <td
                                 key={`${roundData.round}-${turnIdx}-${playerIndex}`}
-                                className="border border-gray-300 px-2 py-2 text-center"
+                                className="border border-gray-600 px-2 py-2 text-center text-white"
                               >
                                 <div className="font-semibold">{turnPoints}</div>
                               </td>
                             )
                           })
                         )}
-                        <td className="border border-gray-300 px-4 py-2 text-center font-bold text-lg">
+                        <td className="border border-gray-600 px-4 py-2 text-center font-bold text-lg text-white">
                           {scores[playerIndex] || 0}
                         </td>
                       </tr>

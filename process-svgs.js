@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 // Theme colors
 const THEME_COLORS = {
   'at-work': '#b65acc',    // PURPLE
-  'core': '#7a7978',        // GREY
+  'feeling': '#7a7978',        // GREY
   'at-home': '#2eb81b',    // GREEN
   'travel': '#fe9b01',      // ORANGE
   'lifestyle': '#ff342d',   // RED
@@ -28,7 +28,7 @@ const THEME_FOLDERS = {
   'adult': 'adult',
   'fantasy': 'fantasy',
   'sci-fi': 'sci-fi',
-  'core': 'core',
+  'feeling': 'feeling',
 };
 
 function processSVG(svgContent, themeColor) {

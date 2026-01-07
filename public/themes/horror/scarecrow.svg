@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   version="1.1"
+   id="Uploaded to svgrepo.com"
+   width="800px"
+   height="800px"
+   viewBox="0 0 32 32"
+   xml:space="preserve"
+   sodipodi:docname="scare-svgrepo-com.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1" /><sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="0.38214423"
+   inkscape:cx="440.933"
+   inkscape:cy="682.98821"
+   inkscape:window-width="1712"
+   inkscape:window-height="971"
+   inkscape:window-x="0"
+   inkscape:window-y="39"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Uploaded to svgrepo.com" />
+<style
+   type="text/css"
+   id="style1">
+	.stone_een{fill:#800a00000000;}
+	.st0{fill:#800a00000000;}
+</style>
+<path
+   class="stone_een"
+   d="M8,9c0-0.552,0.448-1,1-1h7h7c0.552,0,1,0.448,1,1v1.279c0,0.43-0.275,0.813-0.684,0.949L21,12v5  c0,0.552-0.448,1-1,1h-8c-0.552,0-1-0.448-1-1v-5l-2.316-0.772C8.275,11.092,8,10.71,8,10.279V9z M12,19v6c0,0.552,0.448,1,1,1h2.5  v-4.5c0-0.276,0.224-0.5,0.5-0.5s0.5,0.224,0.5,0.5V26H19c0.552,0,1-0.448,1-1v-6H12z M19,5V4h1.5C20.776,4,21,3.776,21,3.5  S20.776,3,20.5,3H19c0-1.657-1.343-3-3-3s-3,1.343-3,3h-1.5C11.224,3,11,3.224,11,3.5S11.224,4,11.5,4H13v1c0,1.657,1.343,3,3,3  S19,6.657,19,5z M14,27v4c0,0.552,0.448,1,1,1h2c0.552,0,1-0.448,1-1v-4H14z M7,9H4.5C4.224,9,4,9.224,4,9.5S4.224,10,4.5,10H7V9z   M27.5,9H25v1h2.5c0.276,0,0.5-0.224,0.5-0.5S27.776,9,27.5,9z"
+   id="path1"
+   style="fill:#800a00;fill-opacity:1" />
+</svg>
