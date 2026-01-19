@@ -2,13 +2,13 @@
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 
 <svg
-   width="800px"
-   height="800px"
-   viewBox="0 0 17 17"
+   width="657.36469"
+   height="746.21179"
+   viewBox="0 0 13.969 15.857001"
    version="1.1"
    class="si-glyph si-glyph-alien"
    id="svg1"
-   sodipodi:docname="alien-svgrepo-com.svg"
+   sodipodi:docname="alien.svg"
    inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,8 +24,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="0.77074839"
-     inkscape:cx="-208.23916"
-     inkscape:cy="208.88788"
+     inkscape:cx="236.78285"
+     inkscape:cy="350.30887"
      inkscape:window-width="1712"
      inkscape:window-height="971"
      inkscape:window-x="0"
@@ -42,9 +42,10 @@
      fill="none"
      fill-rule="evenodd"
      id="g1"
-     style="fill:#00a6bd;fill-opacity:1">
+     style="fill:#00a6bd;fill-opacity:1"
+     transform="translate(-2.031,-0.143)">
     <path
-       d="M9.014,0.143 C5.159,0.143 2.031,3.122 2.031,6.794 C2.031,10.469 7.209,16 9.014,16 C10.822,16 16,10.469 16,6.794 C16,3.122 12.873,0.143 9.014,0.143 L9.014,0.143 Z M7.895,10.895 C7.579,11.213 6.481,10.624 5.447,9.574 C4.411,8.528 3.829,7.42 4.145,7.1 C4.46,6.779 5.557,7.369 6.592,8.417 C7.625,9.465 8.211,10.572 7.895,10.895 L7.895,10.895 Z M10.114,10.887 C9.794,10.567 10.384,9.461 11.435,8.414 C12.484,7.367 13.593,6.778 13.915,7.1 C14.235,7.418 13.644,8.524 12.595,9.57 C11.545,10.617 10.434,11.204 10.114,10.887 L10.114,10.887 Z"
+       d="M 9.014,0.143 C 5.159,0.143 2.031,3.122 2.031,6.794 2.031,10.469 7.209,16 9.014,16 10.822,16 16,10.469 16,6.794 16,3.122 12.873,0.143 9.014,0.143 Z M 7.895,10.895 C 7.579,11.213 6.481,10.624 5.447,9.574 4.411,8.528 3.829,7.42 4.145,7.1 4.46,6.779 5.557,7.369 6.592,8.417 c 1.033,1.048 1.619,2.155 1.303,2.478 z m 2.219,-0.008 c -0.32,-0.32 0.27,-1.426 1.321,-2.473 1.049,-1.047 2.158,-1.636 2.48,-1.314 0.32,0.318 -0.271,1.424 -1.32,2.47 -1.05,1.047 -2.161,1.634 -2.481,1.317 z"
        fill="#434343"
        class="si-glyph-fill"
        id="path1"

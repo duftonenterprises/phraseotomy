@@ -1,2 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg fill="#ff368a" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 19v-4h-4v4c0 1.103.897 2 2 2s2-.897 2-2z"/><path d="M12 2C6.486 2 2 6.486 2 12c0 4.434 2.903 8.198 6.906 9.505A3.969 3.969 0 0 1 8 19v-2.499C6.412 15.027 6 13 6 13h12s-.411 2.027-2 3.501V19c0 .953-.349 1.816-.906 2.504C19.097 20.197 22 16.434 22 12c0-5.514-4.486-10-10-10zm-3.5 9a1.5 1.5 0 1 1 .001-3.001A1.5 1.5 0 0 1 8.5 11zm4.5 0s.5-2 2.5-2c1.999 0 2.5 2 2.5 2h-5z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#ff368a"
+   width="666.66669"
+   height="650.16669"
+   viewBox="0 0 20.000001 19.505001"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="wink.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.0325"
+     inkscape:cx="323.07692"
+     inkscape:cy="338.46154"
+     inkscape:window-width="896"
+     inkscape:window-height="245"
+     inkscape:window-x="0"
+     inkscape:window-y="39"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <path
+     d="M 12,17 V 13 H 8 v 4 c 0,1.103 0.897,2 2,2 1.103,0 2,-0.897 2,-2 z"
+     id="path1" />
+  <path
+     d="M 10,0 C 4.486,0 0,4.486 0,10 c 0,4.434 2.903,8.198 6.906,9.505 A 3.969,3.969 0 0 1 6,17 V 14.501 C 4.412,13.027 4,11 4,11 h 12 c 0,0 -0.411,2.027 -2,3.501 V 17 c 0,0.953 -0.349,1.816 -0.906,2.504 C 17.097,18.197 20,14.434 20,10 20,4.486 15.514,0 10,0 Z M 6.5,9 A 1.5005001,1.5005001 0 1 1 6.501,5.999 1.5005001,1.5005001 0 0 1 6.5,9 Z M 11,9 c 0,0 0.5,-2 2.5,-2 1.999,0 2.5,2 2.5,2 z"
+     id="path2" />
+</svg>

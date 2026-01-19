@@ -21,8 +21,33 @@ function PlayerInput({ index, value, onChange, onKeyDown, placeholder, isFocused
       onKeyDown={onKeyDown}
       onFocus={onFocus}
       placeholder={placeholder}
-      className="w-full p-4 border-2 border-gray-600 bg-gray-800 text-white rounded-xl focus:border-purple-500 focus:outline-none text-lg transition-colors placeholder-gray-400"
+      className="w-full p-4 border-2 border-gray-300 bg-white text-gray-800 rounded-xl focus:border-purple-500 focus:outline-none text-lg transition-colors placeholder-gray-400"
     />
+  )
+}
+
+// Theme Tile Component
+function ThemeTile({ theme, onClick, getThemeTilePath }) {
+  const [imageError, setImageError] = useState(false)
+
+  return (
+    <button
+      onClick={() => onClick(theme)}
+      className="relative aspect-square rounded-2xl overflow-hidden hover:scale-105 transition-transform hover:shadow-2xl border-2 border-transparent hover:border-purple-500"
+    >
+      {imageError ? (
+        <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white font-bold text-lg">
+          {theme.name}
+        </div>
+      ) : (
+        <img
+          src={getThemeTilePath(theme)}
+          alt={theme.name}
+          className="w-full h-full object-cover"
+          onError={() => setImageError(true)}
+        />
+      )}
+    </button>
   )
 }
 
@@ -49,10 +74,20 @@ function App() {
 
   // Get current storyteller
   const activePlayers = players.filter(p => p && p.trim().length > 0)
-  const currentStorytellerIndex = playerOrder[currentTurn] ?? null
-  const currentStoryteller = currentStorytellerIndex !== null && currentStorytellerIndex < players.length 
-    ? players[currentStorytellerIndex] 
-    : ''
+  // After handleStart, players array is filtered to only contain active players
+  // playerOrder contains indices (0, 1, 2, ...) that refer to positions in the filtered players array
+  // Use modulo to wrap currentTurn if it exceeds playerOrder length (happens across rounds)
+  const safeTurnIndex = playerOrder.length > 0 ? currentTurn % playerOrder.length : 0
+  const currentStorytellerIndex = playerOrder.length > 0 && safeTurnIndex >= 0 && safeTurnIndex < playerOrder.length
+    ? playerOrder[safeTurnIndex] 
+    : null
+  // Access players array directly since it's already filtered after handleStart
+  // Also try activePlayers as fallback
+  const currentStoryteller = currentStorytellerIndex !== null && currentStorytellerIndex >= 0 && currentStorytellerIndex < players.length && players[currentStorytellerIndex]
+    ? players[currentStorytellerIndex].trim()
+    : (currentStorytellerIndex !== null && currentStorytellerIndex >= 0 && currentStorytellerIndex < activePlayers.length && activePlayers[currentStorytellerIndex]
+      ? activePlayers[currentStorytellerIndex].trim()
+      : '')
 
   // Validate players - need at least MIN_PLAYERS
   const validPlayers = players.filter(p => p && p.trim().length > 0)
@@ -93,32 +128,48 @@ function App() {
 
   // Select theme
   const handleThemeSelect = (theme) => {
-    setSelectedTheme(theme)
-    
-    // Store scores at start of turn
-    setTurnStartScores([...scores])
-    
-    // Choose 3 theme icons, 1 feeling icon, and 1 event icon (randomly selected each turn)
-    const themeIconList = getRandomItems(THEME_ICONS[theme.id], 3)
-    const feelingIconList = getRandomItems(FEELING_ICONS, 1)
-    const eventIconList = getRandomItems(EVENT_ICONS, 1)
-    const icons = [
-      ...themeIconList.map(icon => ({ icon, theme: theme.id })),
-      ...feelingIconList.map(icon => ({ icon, theme: 'feeling' })),
-      ...eventIconList.map(icon => ({ icon, theme: 'event' }))
-    ]
-    // shuffle
-    const shuffledIcons = getRandomItems(icons, icons.length)
-    setSelectedIcons(shuffledIcons)
-    
-    // Get 1 random string from theme
-    const strings = getRandomItems(THEME_STRINGS[theme.id], 1)
-    setSelectedString(strings[0] || '')
-    
-    // Reset hold state
-    setIsHoldingPhrase(false)
-    
-    setScreen('GAME_DISPLAY')
+    try {
+      setSelectedTheme(theme)
+      
+      // Store scores at start of turn
+      setTurnStartScores([...scores])
+      
+      // Choose 3 theme icons, 1 feeling icon, and 1 event icon (randomly selected each turn)
+      const themeIconList = THEME_ICONS[theme.id] && THEME_ICONS[theme.id].length > 0
+        ? getRandomItems(THEME_ICONS[theme.id], 3)
+        : []
+      const feelingIconList = FEELING_ICONS && FEELING_ICONS.length > 0
+        ? getRandomItems(FEELING_ICONS, 1)
+        : []
+      const eventIconList = EVENT_ICONS && EVENT_ICONS.length > 0
+        ? getRandomItems(EVENT_ICONS, 1)
+        : []
+      
+      const icons = [
+        ...themeIconList.map(icon => ({ icon, theme: theme.id })),
+        ...feelingIconList.map(icon => ({ icon, theme: 'feeling' })),
+        ...eventIconList.map(icon => ({ icon, theme: 'event' }))
+      ]
+      
+      // shuffle
+      const shuffledIcons = icons.length > 0 ? getRandomItems(icons, icons.length) : []
+      setSelectedIcons(shuffledIcons)
+      
+      // Get 1 random string from theme (handle empty THEME_STRINGS gracefully)
+      const themeStrings = THEME_STRINGS[theme.id]
+      const strings = themeStrings && themeStrings.length > 0
+        ? getRandomItems(themeStrings, 1)
+        : []
+      setSelectedString(strings[0] || '')
+      
+      // Reset hold state
+      setIsHoldingPhrase(false)
+      
+      setScreen('GAME_DISPLAY')
+    } catch (error) {
+      console.error('Error selecting theme:', error)
+      alert(`Error loading theme: ${error.message}`)
+    }
   }
 
   // Continue from game display to points screen
@@ -254,10 +305,20 @@ function App() {
   // Screen 1: Player Entry
   if (screen === 'PLAYER_ENTRY') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
-        <div className="w-full max-w-2xl bg-gray-900 rounded-3xl shadow-xl p-8">
-          <h1 className="text-4xl font-bold text-center mb-2 text-white">Phraseotomy</h1>
-          <h2 className="text-2xl font-semibold mb-2 text-gray-200">
+      <div className="min-h-screen flex justify-center p-4 pt-8 bg-white">
+        <div className="w-full max-w-[900px] bg-gray-100 rounded-3xl shadow-xl p-8">
+          <div className="flex justify-center mb-6">
+            <img 
+              src="/themes/phraseotomy logo.png" 
+              alt="Phraseotomy Logo" 
+              className="max-w-[300px] h-auto"
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
+            />
+          </div>
+          <h1 className="text-4xl font-bold text-center mb-2 text-gray-800">Phraseotomy</h1>
+          <h2 className="text-2xl font-semibold mb-2 text-gray-700">
             Enter Player Names
           </h2>
           <div className="space-y-4">
@@ -292,7 +353,7 @@ function App() {
                   {canDelete && (
                     <button
                       onClick={() => deletePlayerField(index)}
-                      className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors font-semibold"
+                      className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors font-semibold text-gray-800"
                       title="Delete player"
                     >
                       ×
@@ -307,8 +368,8 @@ function App() {
                 disabled={!allFieldsFilled}
                 className={`w-full p-3 border-2 border-dashed rounded-xl transition-colors ${
                   allFieldsFilled
-                    ? 'border-gray-600 text-gray-400 hover:border-purple-400 hover:text-purple-400'
-                    : 'border-gray-700 text-gray-600 cursor-not-allowed'
+                    ? 'border-gray-300 text-gray-500 hover:border-purple-400 hover:text-purple-600'
+                    : 'border-gray-200 text-gray-300 cursor-not-allowed'
                 }`}
               >
                 + Add Player ({players.filter(p => p && p.trim().length > 0).length}/{MAX_PLAYERS})
@@ -328,7 +389,7 @@ function App() {
               START GAME
             </button>
             {!allPlayersUnique && (
-              <p className="text-red-400 text-sm mt-2 text-right">⚠️ All players must have unique names</p>
+              <p className="text-red-600 text-sm mt-2 text-right">⚠️ All players must have unique names</p>
             )}
           </div>
         </div>
@@ -343,36 +404,40 @@ function App() {
 
   // Screen 2: Theme Selection
   if (screen === 'THEME_SELECT') {
+    const activePlayers = players.filter(p => p && p.trim().length > 0)
+    // Calculate storyteller directly here with better error handling
+    let storytellerName = currentStoryteller
+    if (!storytellerName && playerOrder.length > 0 && currentTurn >= 0) {
+      const turnIndex = currentTurn % playerOrder.length
+      const playerIndex = playerOrder[turnIndex]
+      if (playerIndex !== null && playerIndex !== undefined && playerIndex >= 0 && playerIndex < players.length && players[playerIndex]) {
+        storytellerName = players[playerIndex].trim()
+      } else if (playerIndex !== null && playerIndex !== undefined && playerIndex >= 0 && playerIndex < activePlayers.length && activePlayers[playerIndex]) {
+        storytellerName = activePlayers[playerIndex].trim()
+      }
+    }
+    // Fallback placeholder if still no name
+    if (!storytellerName || !storytellerName.trim()) {
+      storytellerName = `Player ${(currentTurn % activePlayers.length) + 1}`
+    }
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
-        <div className="w-full max-w-4xl bg-black rounded-3xl shadow-xl p-8">
+      <div className="min-h-screen flex justify-center p-4 pt-8 bg-white">
+        <div className="w-full max-w-[900px] bg-gray-100 rounded-3xl shadow-xl p-8 border-2 border-gray-300">
+          <p className="text-center text-lg text-gray-600 mb-4">
+            Round {currentRound} of {TOTAL_ROUNDS} • Turn {(currentTurn % activePlayers.length) + 1} of {activePlayers.length} in this round
+          </p>
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-white mb-2">
-              {currentStoryteller}'s Turn
-            </h2>
-            <p className="text-lg text-gray-300">
-              Round {currentRound} of {TOTAL_ROUNDS} • Turn {(currentTurn % (players.filter(p => p && p.trim().length > 0).length)) + 1} of {players.filter(p => p && p.trim().length > 0).length} in this round
-            </p>
-            <p className="text-xl font-semibold text-purple-400 mt-4">Choose a Theme</p>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Choose a Theme</h2>
+            <p className="text-gray-600">{storytellerName}'s Turn</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {THEMES.map((theme) => (
-              <button
+              <ThemeTile
                 key={theme.id}
-                onClick={() => handleThemeSelect(theme)}
-                className="relative aspect-square rounded-2xl overflow-hidden hover:scale-105 transition-transform hover:shadow-2xl border-2 border-transparent hover:border-purple-500"
-              >
-                <img
-                  src={getThemeTilePath(theme)}
-                  alt={theme.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback if tile doesn't load
-                    e.target.style.display = 'none'
-                    e.target.parentElement.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-gray-800 text-white font-bold text-lg">${theme.name}</div>`
-                  }}
-                />
-              </button>
+                theme={theme}
+                onClick={handleThemeSelect}
+                getThemeTilePath={getThemeTilePath}
+              />
             ))}
           </div>
         </div>
@@ -413,25 +478,51 @@ function App() {
 
   // Screen 3: Game Display (5 icons + 1 string)
   if (screen === 'GAME_DISPLAY') {
+    const activePlayers = players.filter(p => p && p.trim().length > 0)
+    // Calculate storyteller directly here with better error handling
+    let storytellerName = currentStoryteller
+    if (!storytellerName && playerOrder.length > 0 && currentTurn >= 0) {
+      const turnIndex = currentTurn % playerOrder.length
+      const playerIndex = playerOrder[turnIndex]
+      if (playerIndex !== null && playerIndex !== undefined && playerIndex >= 0 && playerIndex < players.length && players[playerIndex]) {
+        storytellerName = players[playerIndex].trim()
+      } else if (playerIndex !== null && playerIndex !== undefined && playerIndex >= 0 && playerIndex < activePlayers.length && activePlayers[playerIndex]) {
+        storytellerName = activePlayers[playerIndex].trim()
+      }
+    }
+    // Fallback placeholder if still no name
+    if (!storytellerName || !storytellerName.trim()) {
+      storytellerName = `Player ${(currentTurn % activePlayers.length) + 1}`
+    }
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
-        <div className="w-full max-w-5xl bg-gray-900 rounded-3xl shadow-xl p-8">
+      <div className="min-h-screen flex justify-center p-4 pt-8 bg-white">
+        <div className="w-full max-w-[900px] bg-gray-100 rounded-3xl shadow-xl p-8 border-2 border-gray-300">
+          <p className="text-center text-lg text-gray-600 mb-4">
+            Round {currentRound} of {TOTAL_ROUNDS} • Turn {(currentTurn % activePlayers.length) + 1} of {activePlayers.length} in this round
+          </p>
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">
-              {currentStoryteller} - {selectedTheme?.name}
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              {storytellerName} - {selectedTheme?.name}
             </h2>
           </div>
           
-          <p className="text-center text-lg text-gray-200 mb-2">Use these icons to tell a 60s story</p>
-          <p className="text-center text-sm text-gray-400 mb-4">drag and drop to re-order the icons</p>
+          <p className="text-center text-lg text-gray-700 mb-2">Use these icons to tell a 60s story</p>
+          <p className="text-center text-sm text-gray-600 mb-4">drag and drop to re-order the icons</p>
           
           {/* 5 SVG Icons */}
-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-4">
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-4 mb-4">
             {selectedIcons.map((item, index) => {
+              // On mobile (3-column grid), center the last 2 items (index 3 and 4)
+              // Place them in columns 1 and 2 so they're centered (with column 3 empty on the right)
+              // This maintains the same gap-4 spacing between them as the first row
+              const isMobileLastTwo = index >= 3 && index < 5
+              const mobileColClass = isMobileLastTwo 
+                ? (index === 3 ? 'col-start-1 sm:col-auto' : 'col-start-2 sm:col-auto')
+                : ''
               return (
                 <div
                   key={item.icon+'-'+index}
-                  className="flex flex-col"
+                  className={`flex flex-col ${mobileColClass}`}
                 >
                   <div
                     draggable
@@ -439,18 +530,18 @@ function App() {
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, index)}
                     onDragEnd={handleDragEnd}
-                    className={`aspect-square border-2 rounded-xl p-1 sm:p-4 flex items-center justify-center transition-all cursor-move relative overflow-hidden ${
+                    className={`aspect-square border-2 rounded-xl flex items-center justify-center transition-all cursor-move relative overflow-hidden ${
                       draggedIconIndex === index 
                         ? 'opacity-50 border-purple-500 bg-white' 
                         : draggedIconIndex !== null && draggedIconIndex !== index
-                        ? 'border-purple-600 bg-white'
-                        : 'border-gray-600 bg-white hover:bg-gray-50'
+                        ? 'border-purple-300 bg-white'
+                        : 'border-gray-300 bg-white hover:bg-gray-50'
                     }`}
                   >
                     <img
                       src={getSVGPath(item.theme, item.icon)}
                       alt={`Icon ${index + 1}`}
-                      className="pointer-events-none select-none w-[90%] h-[90%] sm:w-[70%] sm:h-[70%] max-w-[200px] max-h-[200px] sm:max-w-[120px] sm:max-h-[120px]"
+                      className="pointer-events-none select-none w-[90%] h-[90%]"
                       style={{
                         objectFit: 'contain',
                         objectPosition: 'center',
@@ -469,11 +560,11 @@ function App() {
           </div>
 
           {/* Secret wisp text */}
-          <p className="text-center text-lg text-gray-300 mb-4">Don't forget to also insert the secret wisp:</p>
+          <p className="text-center text-lg text-gray-700 mb-4">Don't forget to also insert the secret wisp:</p>
 
           {/* String/Phrase - only visible when holding */}
           <div 
-            className="bg-gradient-to-r from-purple-900 to-blue-900 rounded-2xl p-6 mb-8 min-h-[80px] flex items-center justify-center border-2 border-purple-700"
+            className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-2xl p-6 mb-8 min-h-[80px] flex items-center justify-center border-2 border-purple-300"
             onMouseDown={() => setIsHoldingPhrase(true)}
             onMouseUp={() => setIsHoldingPhrase(false)}
             onMouseLeave={() => setIsHoldingPhrase(false)}
@@ -481,11 +572,11 @@ function App() {
             onTouchEnd={() => setIsHoldingPhrase(false)}
           >
             {isHoldingPhrase ? (
-              <p className="text-2xl font-semibold text-center text-white">
+              <p className="text-2xl font-semibold text-center text-gray-800">
                 {selectedString}
               </p>
             ) : (
-              <p className="text-lg text-center text-gray-400 italic">
+              <p className="text-lg text-center text-gray-500 italic">
                 Click and hold to reveal
               </p>
             )}
@@ -506,49 +597,62 @@ function App() {
 
   // Screen 4: Points Add/Remove
   if (screen === 'POINTS_ADJUST') {
+    // After handleStart, players array is already filtered to only active players
+    // So we can use it directly
+    const activePlayers = players.filter(p => p && p.trim().length > 0)
+    const numActivePlayers = activePlayers.length > 0 ? activePlayers.length : players.length
+    
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
-        <div className="w-full max-w-3xl bg-gray-900 rounded-3xl shadow-xl p-8">
+      <div className="min-h-screen flex justify-center p-4 pt-8 bg-white">
+        <div className="w-full max-w-[900px] bg-gray-100 rounded-3xl shadow-xl p-8">
+          <p className="text-center text-lg text-gray-600 mb-4">
+            Round {currentRound} of {TOTAL_ROUNDS} • Turn {(currentTurn % numActivePlayers) + 1} of {numActivePlayers} in this round
+          </p>
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-white mb-2">Adjust Points</h2>
-            <p className="text-gray-300">The Storyteller receives 1 point for every player deceived</p>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Adjust Points</h2>
+            <p className="text-gray-600">The Storyteller receives 1 point for every player deceived</p>
           </div>
           
           <div className="space-y-4">
-            {players.map((player, index) => {
-              const startingScore = turnStartScores[index] || 0
-              const currentTotal = startingScore + roundScores[index]
+            {players.map((player, playerIndex) => {
+              // After handleStart, players array contains only active players
+              // So playerIndex directly matches the index in scores arrays
+              if (!player || !player.trim()) {
+                return null
+              }
+              const startingScore = turnStartScores[playerIndex] || 0
+              const currentTotal = startingScore + (roundScores[playerIndex] || 0)
               return (
                 <div
-                  key={index}
-                  className="flex items-center justify-between p-4 border-2 border-gray-700 rounded-xl bg-gray-800"
+                  key={playerIndex}
+                  className="flex items-center justify-between p-4 border-2 border-gray-300 rounded-xl bg-gray-50"
                 >
                   <div className="flex-1">
-                    <div className="font-semibold text-lg text-white">{player}</div>
-                    <div className="text-sm text-gray-400">
+                    <div className="font-semibold text-lg text-gray-800">{player}</div>
+                    <div className="text-sm text-gray-600">
                       Started with: {startingScore} points
                     </div>
-                    {currentStorytellerIndex === index && (
-                      <span className="text-sm text-purple-400 font-medium">(Storyteller)</span>
+                    {currentStorytellerIndex === playerIndex && (
+                      <span className="text-sm text-purple-600 font-medium">(Storyteller)</span>
                     )}
                   </div>
                   <div className="flex items-center gap-4">
                     <button
-                      onClick={() => handleScoreChange(index, -1)}
+                      onClick={() => handleScoreChange(playerIndex, -1)}
                       className="w-10 h-10 rounded-full bg-red-500 text-white font-bold hover:bg-red-600 transition-colors flex items-center justify-center"
                     >
                       −
                     </button>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-white">
-                        {roundScores[index]}
+                      <div className="text-2xl font-bold text-gray-800">
+                        {roundScores[playerIndex] || 0}
                       </div>
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-gray-600">
                         Total: {currentTotal}
                       </div>
                     </div>
                     <button
-                      onClick={() => handleScoreChange(index, 1)}
+                      onClick={() => handleScoreChange(playerIndex, 1)}
                       className="w-10 h-10 rounded-full bg-green-500 text-white font-bold hover:bg-green-600 transition-colors flex items-center justify-center"
                     >
                       +
@@ -594,17 +698,17 @@ function App() {
     }
 
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-black">
-        <div className="w-full max-w-6xl bg-gray-900 rounded-3xl shadow-xl p-8">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold text-white mb-2">Scoreboard</h2>
+      <div className="min-h-screen flex justify-center p-4 pt-8 bg-white">
+        <div className="w-full max-w-[900px] bg-gray-100 rounded-3xl shadow-xl p-8">
+          <p className="text-center text-lg text-gray-600 mb-4">
             {isGameComplete ? (
-              <p className="text-xl text-purple-400 font-semibold">Game Complete!</p>
+              <span className="text-xl text-purple-600 font-semibold">Game Complete!</span>
             ) : (
-              <p className="text-gray-300">
-                Round {currentRound} of {TOTAL_ROUNDS} • Turn {currentTurnInRound} of {turnsPerRound} in this round
-              </p>
+              `Round ${currentRound} of ${TOTAL_ROUNDS} • Turn ${currentTurnInRound} of ${turnsPerRound} in this round`
             )}
+          </p>
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Scoreboard</h2>
           </div>
 
           {/* Score History Table */}
@@ -613,59 +717,64 @@ function App() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-gray-800">
-                      <th className="border border-gray-600 px-4 py-2 text-left font-semibold text-white">Player</th>
+                    <tr className="bg-gray-100">
+                      <th className="border border-gray-300 px-4 py-2 text-left font-semibold text-gray-800">Player</th>
                       {roundsData.map((roundData) => (
                         <th
                           key={roundData.round}
                           colSpan={roundData.turns.length}
-                          className="border border-gray-600 px-4 py-2 text-center font-semibold bg-purple-900 text-white"
+                          className="border border-gray-300 px-4 py-2 text-center font-semibold bg-purple-50 text-gray-800"
                         >
                           Round {roundData.round}
                         </th>
                       ))}
-                      <th className="border border-gray-600 px-4 py-2 text-center font-semibold bg-blue-900 text-white">
+                      <th className="border border-gray-300 px-4 py-2 text-center font-semibold bg-blue-50 text-gray-800">
                         Total
                       </th>
                     </tr>
-                    <tr className="bg-gray-800">
-                      <th className="border border-gray-600 px-4 py-2 text-left text-sm text-gray-400"></th>
+                    <tr className="bg-gray-50">
+                      <th className="border border-gray-300 px-4 py-2 text-left text-sm text-gray-600"></th>
                       {roundsData.map((roundData) =>
                         roundData.turns.map((turn, idx) => (
                           <th
                             key={`${roundData.round}-${idx}`}
-                            className="border border-gray-600 px-2 py-1 text-xs text-gray-400"
+                            className="border border-gray-300 px-2 py-1 text-xs text-gray-600"
                           >
                             T{turn.turn}
                           </th>
                         ))
                       )}
-                      <th className="border border-gray-600 px-4 py-2 text-center text-sm text-gray-400"></th>
+                      <th className="border border-gray-300 px-4 py-2 text-center text-sm text-gray-600"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {activePlayers.map((player, playerIndex) => (
-                      <tr key={playerIndex} className="hover:bg-gray-800">
-                        <td className="border border-gray-600 px-4 py-2 font-medium text-white">{player}</td>
-                        {roundsData.map((roundData) =>
-                          roundData.turns.map((turn, turnIdx) => {
-                            // Show points for this turn only (not cumulative)
-                            const turnPoints = turn.scores[playerIndex] || 0
-                            return (
-                              <td
-                                key={`${roundData.round}-${turnIdx}-${playerIndex}`}
-                                className="border border-gray-600 px-2 py-2 text-center text-white"
-                              >
-                                <div className="font-semibold">{turnPoints}</div>
-                              </td>
-                            )
-                          })
-                        )}
-                        <td className="border border-gray-600 px-4 py-2 text-center font-bold text-lg text-white">
-                          {scores[playerIndex] || 0}
-                        </td>
-                      </tr>
-                    ))}
+                    {activePlayers.map((player, activeIndex) => {
+                      // After handleStart, players array is filtered to only active players
+                      // So activeIndex matches the index in players array
+                      const playerIndex = activeIndex
+                      return (
+                        <tr key={playerIndex} className="hover:bg-gray-50">
+                          <td className="border border-gray-300 px-4 py-2 font-medium text-gray-800">{player}</td>
+                          {roundsData.map((roundData) =>
+                            roundData.turns.map((turn, turnIdx) => {
+                              // Show points for this turn only (not cumulative)
+                              const turnPoints = turn.scores[playerIndex] || 0
+                              return (
+                                <td
+                                  key={`${roundData.round}-${turnIdx}-${playerIndex}`}
+                                  className="border border-gray-300 px-2 py-2 text-center text-gray-800"
+                                >
+                                  <div className="font-semibold">{turnPoints}</div>
+                                </td>
+                              )
+                            })
+                          )}
+                          <td className="border border-gray-300 px-4 py-2 text-center font-bold text-lg text-gray-800">
+                            {scores[playerIndex] || 0}
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>

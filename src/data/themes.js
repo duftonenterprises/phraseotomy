@@ -13,8 +13,8 @@ export const THEMES = [
   { id: 'sci-fi', name: 'Sci-fi', folder: 'sci-fi' },
 ]
 
-// SVG icons for each theme (sample - you'll need to add all)
-// These will be loaded from the theme folders
+// SVG icons for each theme
+// These are automatically indexed from the theme folders
 // Feeling icons from the feeling folder (formerly core)
 export const FEELING_ICONS = [
   'angry.svg',
@@ -29,6 +29,7 @@ export const FEELING_ICONS = [
   'eye crying.svg',
   'flower bee.svg',
   'hand on shoulder.svg',
+  'holding breath.svg',
   'hourglass.svg',
   'i heart shirt.svg',
   'ladder.svg',
@@ -51,7 +52,7 @@ export const FEELING_ICONS = [
   'treeswing.svg',
   'triangle flag.svg',
   'unravelling sweater.svg',
-  'well.svg',
+  'well.svg'
 ]
 
 // Event icons from the event folder
@@ -73,7 +74,6 @@ export const EVENT_ICONS = [
   'heart arrow.svg',
   'icecream and sun.svg',
   'idea.svg',
-  'kids.svg',
   'lifesaver.svg',
   'match strike.svg',
   'meal.svg',
@@ -85,13 +85,14 @@ export const EVENT_ICONS = [
   'rain cloud.svg',
   'sick.svg',
   'sleep.svg',
+  'snow.svg',
   'spade.svg',
   'stopsign.svg',
   'storm cloud.svg',
   'talking heads.svg',
   'thief.svg',
   'toilet.svg',
-  'trophy.svg',
+  'trophy.svg'
 ]
 
 export const THEME_ICONS = {
@@ -100,43 +101,42 @@ export const THEME_ICONS = {
     'armoire.svg',
     'bath.svg',
     'bookshelf.svg',
-    'broom+duster.svg',
     'bunk bed.svg',
-    'car key.svg',
+    'burglar.svg',
     'controller+joystick.svg',
     'dog.svg',
     'electric meter.svg',
     'fireplace.svg',
     'fishbowl.svg',
-    'frames.svg',
     'fridge.svg',
-    'gas meter.svg',
+    'garage.svg',
+    'gardening.svg',
     'grandfather clock.svg',
+    'kids.svg',
     'laundry basket.svg',
     'mailbox.svg',
+    'moving.svg',
     'oven hob.svg',
-    'plants.svg',
+    'picture frames.svg',
     'radiator.svg',
     'remote.svg',
     'rocking chair.svg',
+    'shed.svg',
     'slippers.svg',
     'sofa.svg',
-    'stairs.svg',
     'tall lamp.svg',
     'teapot.svg',
-    'thief.svg',
     'to let for sale.svg',
     'towel rail.svg',
     'treehouse.svg',
     'tv news.svg',
     'vacuum.svg',
     'washer.svg',
-    'welcome mat.svg',
+    'welcome mat.svg'
   ],
   'at-work': [
-    'approval.svg',
+    'ID badge.svg',
     'boardroom.svg',
-    'boss.svg',
     'box of contents.svg',
     'briefcase.svg',
     'building.svg',
@@ -145,20 +145,22 @@ export const THEME_ICONS = {
     'coffee break.svg',
     'coffee machine.svg',
     'column chart.svg',
+    'conference call.svg',
     'contract.svg',
     'deadline.svg',
+    'disagree.svg',
     'email.svg',
     'factory.svg',
     'hardhat.svg',
     'headhunter.svg',
     'headset.svg',
     'keyboard.svg',
+    'labcoat.svg',
     'laptop.svg',
     'logistics.svg',
     'lunchbox.svg',
     'newton cradle.svg',
     'org.svg',
-    'pass.svg',
     'photocopier.svg',
     'projector.svg',
     'raise.svg',
@@ -168,8 +170,7 @@ export const THEME_ICONS = {
     'stationary.svg',
     'stocks.svg',
     'to do.svg',
-    'traffic.svg',
-    'vid call.svg',
+    'traffic.svg'
   ],
   'lifestyle': [
     'archery.svg',
@@ -186,7 +187,6 @@ export const THEME_ICONS = {
     'film.svg',
     'fishing.svg',
     'football.svg',
-    'gardening.svg',
     'gym.svg',
     'hockey.svg',
     'instruments.svg',
@@ -199,6 +199,7 @@ export const THEME_ICONS = {
     'painting.svg',
     'reading.svg',
     'reiki.svg',
+    'rugby baseball.svg',
     'running.svg',
     'sewing.svg',
     'shopping.svg',
@@ -207,11 +208,12 @@ export const THEME_ICONS = {
     'tattoo.svg',
     'theatre.svg',
     'wintasting.svg',
-    'yoga.svg',
+    'yoga.svg'
   ],
   'travel': [
     '3star.svg',
-    'backpag.svg',
+    'adapter.svg',
+    'backpack.svg',
     'binoculars.svg',
     'camp fire.svg',
     'compass.svg',
@@ -234,7 +236,6 @@ export const THEME_ICONS = {
     'postcard.svg',
     'selfie.svg',
     'shades.svg',
-    'signpost.svg',
     'skiing.svg',
     'snowglobe.svg',
     'sunbed.svg',
@@ -245,7 +246,7 @@ export const THEME_ICONS = {
     'tikkihut.svg',
     'train.svg',
     'vista.svg',
-    'winery.svg',
+    'winery.svg'
   ],
   'horror': [
     'bear trap.svg',
@@ -283,7 +284,7 @@ export const THEME_ICONS = {
     'vampire.svg',
     'voodoo.svg',
     'werewolf-6.svg',
-    'zombie.svg',
+    'zombie.svg'
   ],
   'adult': [
     'NSFW.svg',
@@ -321,7 +322,7 @@ export const THEME_ICONS = {
     'tampon.svg',
     'tongue.svg',
     'vibrator-toy.svg',
-    'wink.svg',
+    'wink.svg'
   ],
   'fantasy': [
     'amulet.svg',
@@ -359,7 +360,7 @@ export const THEME_ICONS = {
     'torch.svg',
     'unicorn.svg',
     'wand.svg',
-    'wizard.svg',
+    'wizard.svg'
   ],
   'sci-fi': [
     'Spacestation.svg',
@@ -397,12 +398,10 @@ export const THEME_ICONS = {
     'turret.svg',
     'ufo.svg',
     'vr.svg',
-    'wormhole.svg',
+    'wormhole.svg'
   ],
 }
 
-// Strings/phrases for each theme
-// You can expand these with actual phrases from your game
 export const THEME_STRINGS = {
   'at-home': [
     'Making the bed',
@@ -502,7 +501,7 @@ export const THEME_STRINGS = {
     'Visiting the future',
     'Exploring the galaxy',
   ],
-}
+};
 
 // Helper function to get random items from an array
 export function getRandomItems(array, count) {
@@ -528,4 +527,7 @@ export function getSVGPath(themeId, iconName) {
   // This assumes SVGs are in a public/themes folder
   return `/themes/${theme.folder}/${iconName}`
 }
+
+
+
 

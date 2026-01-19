@@ -1,6 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg fill="#800a00" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-<title>noose</title>
-<path d="M18.884 13.184c0.484-0.037 0.866-0.44 0.866-0.934v-5.625c0-0.518-0.42-0.937-0.937-0.937h-0.937v-3.751c0-0.518-0.42-0.937-0.937-0.937h-1.875c-0.518 0-0.937 0.42-0.937 0.937v3.751h-0.938c-0.518 0-0.937 0.42-0.937 0.937v5.625c0 0.494 0.382 0.897 0.866 0.934-3.217 5.633-6.491 7.233-6.491 9.379 0 5.625 4.552 8.438 9.375 8.438s9.375-2.813 9.375-8.438c0-2.145-3.273-3.745-6.491-9.379zM16 28.188c-2.815 0-5.625-2.813-5.625-5.625 0-0.938 4.688-5.625 5.625-8.438 0.937 2.813 5.625 7.5 5.625 8.438 0 2.813-2.815 5.625-5.625 5.625z"></path>
+
+<svg
+   fill="#800a00"
+   width="468.75"
+   height="750.02502"
+   viewBox="0 0 18.75 30.001001"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="noose.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.0325"
+     inkscape:cx="230.76923"
+     inkscape:cy="369.23077"
+     inkscape:window-width="896"
+     inkscape:window-height="245"
+     inkscape:window-x="0"
+     inkscape:window-y="39"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <title
+     id="title1">noose</title>
+  <path
+     d="m 12.257,12.184 c 0.484,-0.037 0.866,-0.44 0.866,-0.934 V 5.625 c 0,-0.518 -0.42,-0.937 -0.937,-0.937 H 11.249 V 0.937 C 11.249,0.419 10.829,0 10.312,0 H 8.437 C 7.919,0 7.5,0.42 7.5,0.937 V 4.688 H 6.562 c -0.518,0 -0.937,0.42 -0.937,0.937 v 5.625 c 0,0.494 0.382,0.897 0.866,0.934 C 3.274,17.817 0,19.417 0,21.563 c 0,5.625 4.552,8.438 9.375,8.438 4.823,0 9.375,-2.813 9.375,-8.438 0,-2.145 -3.273,-3.745 -6.491,-9.379 z M 9.373,27.188 c -2.815,0 -5.625,-2.813 -5.625,-5.625 0,-0.938 4.688,-5.625 5.625,-8.438 0.937,2.813 5.625,7.5 5.625,8.438 0,2.813 -2.815,5.625 -5.625,5.625 z"
+     id="path1" />
 </svg>

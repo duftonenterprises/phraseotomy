@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="222.953 51.4282 204.0719 277.3421"
-   width="204.072px"
-   height="277.342px"
+   viewBox="222.953 51.4282 180.89146 117.01784"
+   width="180.89156"
+   height="117.01781"
    preserveAspectRatio="none"
    version="1.1"
    id="svg1"
@@ -22,14 +22,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="2.9496756"
-     inkscape:cx="143.91413"
-     inkscape:cy="158.66151"
+     inkscape:cx="128.99724"
+     inkscape:cy="59.328558"
      inkscape:window-width="1712"
      inkscape:window-height="971"
      inkscape:window-x="0"
      inkscape:window-y="39"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg1" /><defs
+     inkscape:current-layer="svg1"
+     showgrid="false" /><defs
      id="defs1"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath3803"><path
@@ -39,11 +40,11 @@
      id="path3802"
      d="m 0,0 c -5.486,0 -10.64,3.379 -12.638,8.829 l -57.949,158.023 c -4.121,11.235 -16.609,17.025 -27.85,12.905 -11.236,-4.121 -17.026,-16.615 -12.905,-27.851 l 6.309,-17.206 c 2.56,-6.979 -1.023,-14.712 -8.002,-17.272 -6.979,-2.556 -14.711,1.023 -17.271,8.003 l -6.31,17.206 c -9.231,25.174 3.738,53.163 28.91,62.394 25.169,9.231 53.162,-3.738 62.392,-28.91 L 12.636,18.098 C 15.195,11.119 11.612,3.386 4.633,0.827 3.104,0.266 1.539,0 0,0"
      style="fill:#7a7978;fill-opacity:1;fill-rule:nonzero;stroke:none"
-     transform="matrix(0.56256782,0,0,-0.56256782,316.53661,267.80185)"
+     transform="matrix(0.56256782,0,0,-0.56256782,301.48273,168.446)"
      clip-path="url(#clipPath3803)" /><g
      style="fill:#7a7978;fill-opacity:1"
      id="g1"
-     transform="matrix(0.18940067,0,0,0.18940067,321.93426,152.15536)"><path
+     transform="matrix(0.18940067,0,0,0.18940067,306.88038,52.799515)"><path
        d="m 507.31,185.71 -181,-181 a 16,16 0 0 0 -22.62,0 L 281,27.31 a 16,16 0 0 0 0,22.63 l 181,181 a 16,16 0 0 0 22.63,0 l 22.62,-22.63 a 16,16 0 0 0 0.06,-22.6 z m -179.54,66.41 -67.89,-67.89 55.1,-55.1 -45.25,-45.25 -109.67,109.67 a 96.08,96.08 0 0 0 -25.67,46.29 l -27.74,120.26 -102,102 a 16,16 0 0 0 0,22.63 l 22.62,22.62 a 16,16 0 0 0 22.63,0 l 102,-102 120.25,-27.75 a 95.88,95.88 0 0 0 46.29,-25.65 L 428.12,242.27 382.87,197 Z m -54.57,54.57 a 32,32 0 0 1 -15.45,8.54 l -79.3,18.32 18.3,-79.3 a 32.22,32.22 0 0 1 8.56,-15.45 l 9.31,-9.31 67.89,67.89 z"
        id="path1"
        style="fill:#7a7978;fill-opacity:1" /></g></svg>
