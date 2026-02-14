@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { THEMES, THEME_ICONS, THEME_STRINGS, getRandomItems, getSVGPath, FEELING_ICONS, EVENT_ICONS } from './data/themes'
+import { saveGameState, loadGameState, clearGameState, hasValidGameState } from './gameStorage'
 
 
 // Player Input Component with auto-focus
@@ -71,6 +72,47 @@ function App() {
   const [turnStartScores, setTurnStartScores] = useState([0, 0, 0, 0]) // Scores at start of current turn
   const [scoreHistory, setScoreHistory] = useState([]) // Array of {round, turn, scores: [player1, player2, ...]}
   const [focusedInputIndex, setFocusedInputIndex] = useState(0)
+  const [savedGame, setSavedGame] = useState(null)
+  const [showPlayerEntry, setShowPlayerEntry] = useState(false)
+  const hasUserStartedOrResumed = useRef(false)
+
+  // On mount, check for saved game (don't auto-restore; user can click Resume Game)
+  useEffect(() => {
+    const loaded = loadGameState(THEMES)
+    setSavedGame(loaded)
+  }, [])
+
+  // Persist game state whenever it changes, only after user has started or resumed a game
+  useEffect(() => {
+    if (!hasUserStartedOrResumed.current) return
+    saveGameState({
+      players,
+      playerOrder,
+      screen,
+      currentRound,
+      currentTurn,
+      selectedTheme,
+      selectedIcons,
+      selectedString,
+      scores,
+      roundScores,
+      turnStartScores,
+      scoreHistory,
+    })
+  }, [
+    players,
+    playerOrder,
+    screen,
+    currentRound,
+    currentTurn,
+    selectedTheme,
+    selectedIcons,
+    selectedString,
+    scores,
+    roundScores,
+    turnStartScores,
+    scoreHistory,
+  ])
 
   // Get current storyteller
   const activePlayers = players.filter(p => p && p.trim().length > 0)
@@ -98,8 +140,28 @@ function App() {
   const hasDuplicates = new Set(playerNamesLower).size !== playerNamesLower.length
   const allPlayersUnique = !hasDuplicates
 
+  // Resume saved game from first page (only when localStorage has valid state)
+  const handleResumeGame = () => {
+    if (!hasValidGameState() || !savedGame) return
+    setPlayers(savedGame.players)
+    setPlayerOrder(savedGame.playerOrder)
+    setScreen(savedGame.screen)
+    setCurrentRound(savedGame.currentRound)
+    setCurrentTurn(savedGame.currentTurn)
+    setSelectedTheme(savedGame.selectedTheme)
+    setSelectedIcons(savedGame.selectedIcons)
+    setSelectedString(savedGame.selectedString)
+    setScores(savedGame.scores)
+    setRoundScores(savedGame.roundScores)
+    setTurnStartScores(savedGame.turnStartScores)
+    setScoreHistory(savedGame.scoreHistory)
+    setSavedGame(null)
+    hasUserStartedOrResumed.current = true
+  }
+
   // Start game
   const handleStart = () => {
+    hasUserStartedOrResumed.current = true
     if (!allPlayersValid) {
       alert(`Please enter at least ${MIN_PLAYERS} player names`)
       return
@@ -242,8 +304,19 @@ function App() {
     setScreen('THEME_SELECT')
   }
 
-  // Reset game
+  // New game: purge storage and show player entry form
+  const handleNewGame = () => {
+    clearGameState()
+    setSavedGame(null)
+    setShowPlayerEntry(true)
+  }
+
+  // Reset game (from scoreboard): back to landing, don't show form until New Game
   const handleReset = () => {
+    clearGameState()
+    hasUserStartedOrResumed.current = false
+    setSavedGame(null)
+    setShowPlayerEntry(false)
     setPlayers(['', '', '', ''])
     setPlayerOrder([])
     setCurrentRound(1)
@@ -302,22 +375,39 @@ function App() {
   const allFieldsFilled = players.every(p => p && p.trim().length > 0)
 
 
-  // Screen 1: Player Entry
+  // Screen 1: Landing (Resume / New Game) or Player Entry
   if (screen === 'PLAYER_ENTRY') {
+    const canResume = hasValidGameState() && savedGame
+    if (!showPlayerEntry) {
+      return (
+        <div className="min-h-screen flex justify-center p-4 pt-8 bg-white">
+          <div className="w-full max-w-[900px] bg-gray-100 rounded-3xl shadow-xl p-8 flex flex-col items-center gap-6">
+            <div className="flex flex-wrap justify-center gap-4">
+              <button
+                onClick={handleResumeGame}
+                disabled={!canResume}
+                className={`px-6 py-3 rounded-xl font-semibold shadow-lg transition-all ${
+                  canResume
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
+              >
+                Resume Game
+              </button>
+              <button
+                onClick={handleNewGame}
+                className="px-6 py-3 rounded-xl bg-gray-700 text-white font-semibold hover:bg-gray-800 shadow-lg transition-all"
+              >
+                New Game
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    }
     return (
       <div className="min-h-screen flex justify-center p-4 pt-8 bg-white">
         <div className="w-full max-w-[900px] bg-gray-100 rounded-3xl shadow-xl p-8">
-          <div className="flex justify-center mb-6">
-            <img 
-              src="/themes/phraseotomy logo.png" 
-              alt="Phraseotomy Logo" 
-              className="max-w-[300px] h-auto"
-              onError={(e) => {
-                e.target.style.display = 'none'
-              }}
-            />
-          </div>
-          <h1 className="text-4xl font-bold text-center mb-2 text-gray-800">Phraseotomy</h1>
           <h2 className="text-2xl font-semibold mb-2 text-gray-700">
             Enter Player Names
           </h2>
